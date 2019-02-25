@@ -47,6 +47,7 @@ def paired_t_test_(v, weights):
     s_d = np.nanstd(v - v[:, np.newaxis], axis=2, ddof=1)
     t = x_d / (s_d / np.sqrt(v.shape[0]))
     score = x_d / (s_d / np.sqrt(v.T.shape[0]))
+    score[np.isnan(score)] = 0
     return score, dof
 
 def percentage_t_test(v, weights=None, opts={'distribution': 't'}, one_sided=False):
