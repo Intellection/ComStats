@@ -18,8 +18,12 @@ class TestComStats(unittest.TestCase):
             [1, 0.1, 0.2, 0.3, 2, 0.1, 0.1, 2, 0.1, 0.1, 0.2, 0.1, 0.3, 0.4, 1]
         ])
         self.percentage_input_set = np.array([
-            [10, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 1],
-            [3, 0, 1, 3, 0, 0, 2, 1, 2, 3, 3, 1, 0, 0, 2]
+            [0.1, 0.05, 0.05, 0.1, 0.6, 0.0, 0.4, 0.1, 0.1, 0.05, 0.1, 0.0, 0.0, 0.0, 0.1],
+            [0.3, 0.05, 0.1, 0.3, 0.5, 0.2, 0.21, 0.1, 0.2, 0.3, 0.3, 0.1, 0.0, 0.0, 0.2]
+        ])
+        self.percentage_weights = np.array([
+            [1, 0.1, 0.2, 0.3, 2, 0.1, 0.1, 2, 0.1, 0.1, 0.2, 0.1, 0.3, 0.4, 1],
+            [1, 0.1, 0.2, 0.3, 2, 0.1, 0.1, 2, 0.1, 0.1, 0.2, 0.1, 0.3, 0.4, 1]
         ])
         self.percentage_weights = np.array([
             [1, 0.1, 0.2, 0.3, 2, 0.1, 0.1, 2, 0.1, 0.1, 0.2, 0.1, 0.3, 0.4, 1],
@@ -131,81 +135,46 @@ class TestComStats(unittest.TestCase):
         self.assertTrue((scores.round(8) == expected_scores).all())
 
     def test_percentage_t_test(self):
-        expected_p_values = [[ 0.5       ,  0.00176546,  0.5       ,  0.00480757],
-                             [ 0.00176546,  0.5       ,  0.00176546,  0.21855705],
-                             [ 0.5       ,  0.00176546,  0.5       ,  0.00480757],
-                             [ 0.00480757,  0.21855705,  0.00480757,  0.5       ]]
-        expected_scores = [[ 0.        , -3.38132124,  0.        , -2.88675135],
-                           [ 3.38132124,  0.        ,  3.38132124,  0.78881064],
-                           [ 0.        , -3.38132124,  0.        , -2.88675135],
-                           [ 2.88675135, -0.78881064,  2.88675135,  0.        ]]
-        p_values, scores = stats.percentage_t_test(self.input_set)
-        print(" test_percentage_t_test")
-        print(p_values.round(8))
-        print(scores)
+        expected_p_values = [[ 1.        ,  0.57861761],
+                             [ 0.57861761,  1.        ]]
+        expected_scores = [[ 0.        , -0.56195533],
+                           [ 0.56195533,  0.        ]]
+        p_values, scores = stats.percentage_t_test(self.percentage_input_set)
         self.assertTrue((p_values.round(8) == expected_p_values).all())
         self.assertTrue((scores.round(8) == expected_scores).all())
 
-    # def test_percentage_t_test_one_sided(self):
-    #     expected_p_values = [[ 0.5       ,  0.00176546,  0.5       ,  0.00480757],
-    #                          [ 0.00176546,  0.5       ,  0.00176546,  0.21855705],
-    #                          [ 0.5       ,  0.00176546,  0.5       ,  0.00480757],
-    #                          [ 0.00480757,  0.21855705,  0.00480757,  0.5       ]]
-    #     expected_scores = [[ 0.        , -3.38132124,  0.        , -2.88675135],
-    #                        [ 3.38132124,  0.        ,  3.38132124,  0.78881064],
-    #                        [ 0.        , -3.38132124,  0.        , -2.88675135],
-    #                        [ 2.88675135, -0.78881064,  2.88675135,  0.        ]]
-    #     p_values, scores = stats.percentage_t_test(self.input_set, None, {'distribution': 't'}, True)
-    #     print(" test_percentage_t_test_one_sided")
-    #     print(p_values.round(8))
-    #     print(scores)
-    #     self.assertTrue((p_values.round(8) == expected_p_values).all())
-    #     self.assertTrue((scores.round(8) == expected_scores).all())
+    def test_percentage_t_test_one_sided(self):
+        expected_p_values = [[ 0.5      ,  0.2893088],
+                             [ 0.2893088,  0.5      ]]
+        expected_scores = [[ 0.        , -0.56195533],
+                           [ 0.56195533,  0.        ]]
+        p_values, scores = stats.percentage_t_test(self.percentage_input_set, None, {'distribution': 't'}, True)
+        self.assertTrue((p_values.round(8) == expected_p_values).all())
+        self.assertTrue((scores.round(8) == expected_scores).all())
     #
-    # def test_weighted_percentage_t_test_one_sided(self):
-    #     expected_p_values = [[ 0.5       ,  0.00176546,  0.5       ,  0.00480757],
-    #                          [ 0.00176546,  0.5       ,  0.00176546,  0.21855705],
-    #                          [ 0.5       ,  0.00176546,  0.5       ,  0.00480757],
-    #                          [ 0.00480757,  0.21855705,  0.00480757,  0.5       ]]
-    #     expected_scores = [[ 0.        , -3.38132124,  0.        , -2.88675135],
-    #                        [ 3.38132124,  0.        ,  3.38132124,  0.78881064],
-    #                        [ 0.        , -3.38132124,  0.        , -2.88675135],
-    #                        [ 2.88675135, -0.78881064,  2.88675135,  0.        ]]
-    #     p_values, scores = stats.percentage_t_test(self.input_set, self.weights, {'distribution': 't'}, True)
-    #     print(" test_weighted_percentage_t_test_one_sided")
-    #     print(p_values.round(8))
-    #     print(scores)
-    #     self.assertTrue((p_values.round(8) == expected_p_values).all())
-    #     self.assertTrue((scores.round(8) == expected_scores).all())
+    def test_weighted_percentage_t_test_one_sided(self):
+        expected_p_values = [[ 0.5      ,  0.4401976],
+                             [ 0.4401976,  0.5      ]]
+        expected_scores = [[ 0.        , -0.15184861],
+                           [ 0.15184861,  0.        ]]
+        p_values, scores = stats.percentage_t_test(self.percentage_input_set, self.percentage_weights, {'distribution': 't'}, True)
+        self.assertTrue((p_values.round(8) == expected_p_values).all())
+        self.assertTrue((scores.round(8) == expected_scores).all())
     #
-    # def test_weighted_percentage_t_test_z_distribution(self):
-    #     expected_p_values = [[ 0.5       ,  0.00176546,  0.5       ,  0.00480757],
-    #                          [ 0.00176546,  0.5       ,  0.00176546,  0.21855705],
-    #                          [ 0.5       ,  0.00176546,  0.5       ,  0.00480757],
-    #                          [ 0.00480757,  0.21855705,  0.00480757,  0.5       ]]
-    #     expected_scores = [[ 0.        , -3.38132124,  0.        , -2.88675135],
-    #                        [ 3.38132124,  0.        ,  3.38132124,  0.78881064],
-    #                        [ 0.        , -3.38132124,  0.        , -2.88675135],
-    #                        [ 2.88675135, -0.78881064,  2.88675135,  0.        ]]
-    #     p_values, scores = stats.percentage_t_test(self.input_set, self.weights, {'distribution': 'z'})
-    #     print(" test_weighted_percentage_t_test_z_distribution")
-    #     print(p_values.round(8))
-    #     print(scores)
-    #     self.assertTrue((p_values.round(8) == expected_p_values).all())
-    #     self.assertTrue((scores.round(8) == expected_scores).all())
-    #
-    # def test_weighted_percentage_t_test_one_sided_z_distribution(self):
-    #     expected_p_values = [[ 0.5       ,  0.00176546,  0.5       ,  0.00480757],
-    #                          [ 0.00176546,  0.5       ,  0.00176546,  0.21855705],
-    #                          [ 0.5       ,  0.00176546,  0.5       ,  0.00480757],
-    #                          [ 0.00480757,  0.21855705,  0.00480757,  0.5       ]]
-    #     expected_scores = [[ 0.        , -3.38132124,  0.        , -2.88675135],
-    #                        [ 3.38132124,  0.        ,  3.38132124,  0.78881064],
-    #                        [ 0.        , -3.38132124,  0.        , -2.88675135],
-    #                        [ 2.88675135, -0.78881064,  2.88675135,  0.        ]]
-    #     p_values, scores = stats.percentage_t_test(self.input_set, self.weights, {'distribution': 'z'}, True)
-    #     print(" test_weighted_percentage_t_test_one_sided_z_distribution")
-    #     print(p_values.round(8))
-    #     print(scores)
-    #     self.assertTrue((p_values.round(8) == expected_p_values).all())
-    #     self.assertTrue((scores.round(8) == expected_scores).all())
+    def test_weighted_percentage_t_test_z_distribution(self):
+        expected_p_values = [[ 1.        ,  0.87930634],
+                             [ 0.87930634,  1.        ]]
+        expected_scores = [[ 0.        , -0.15184861],
+                           [ 0.15184861,  0.        ]]
+        p_values, scores = stats.percentage_t_test(self.percentage_input_set, self.percentage_weights, {'distribution': 'z'})
+        self.assertTrue((p_values.round(8) == expected_p_values).all())
+        self.assertTrue((scores.round(8) == expected_scores).all())
+
+    def test_weighted_percentage_t_test_one_sided_z_distribution(self):
+        expected_p_values = [[ 0.5       ,  0.43965317],
+                             [ 0.43965317,  0.5       ]]
+        expected_scores = [[ 0.        , -0.15184861],
+                           [ 0.15184861,  0.        ]]
+        p_values, scores = stats.percentage_t_test(self.percentage_input_set, self.percentage_weights, {'distribution': 'z'}, True)
+        self.assertTrue((p_values.round(8) == expected_p_values).all())
+        self.assertTrue((scores.round(8) == expected_scores).all())
