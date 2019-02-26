@@ -1,5 +1,5 @@
 import unittest
-from stats import stats
+import comstats
 import numpy as np
 
 class TestComStats(unittest.TestCase):
@@ -39,7 +39,7 @@ class TestComStats(unittest.TestCase):
                            [ 3.38132124,  0.        ,  3.38132124,  0.78881064],
                            [ 0.        , -3.38132124,  0.        , -2.88675135],
                            [ 2.88675135, -0.78881064,  2.88675135,  0.        ]]
-        p_values, scores = stats.t_test(self.input_set)
+        p_values, scores = comstats.t_test(self.input_set)
         self.assertTrue((p_values.round(8) == expected_p_values).all())
         self.assertTrue((scores.round(8) == expected_scores).all())
 
@@ -52,7 +52,7 @@ class TestComStats(unittest.TestCase):
                            [ 3.38132124,  0.        ,  3.38132124,  0.78881064],
                            [ 0.        , -3.38132124,  0.        , -2.88675135],
                            [ 2.88675135, -0.78881064,  2.88675135,  0.        ]]
-        p_values, scores = stats.t_test(self.input_set, None, {'paired': False, 'equal_variance': False}, True)
+        p_values, scores = comstats.t_test(self.input_set, None, {'paired': False, 'equal_variance': False}, True)
         self.assertTrue((p_values.round(8) == expected_p_values).all())
         self.assertTrue((scores.round(8) == expected_scores).all())
 
@@ -65,7 +65,7 @@ class TestComStats(unittest.TestCase):
                            [ 3.38132124,  0.        ,  3.38132124,  0.78881064],
                            [ 0.        , -3.38132124,  0.        , -2.88675135],
                            [ 2.88675135, -0.78881064,  2.88675135,  0.        ]]
-        p_values, scores = stats.t_test(self.input_set, None, {'paired': False, 'equal_variance': True}, False)
+        p_values, scores = comstats.t_test(self.input_set, None, {'paired': False, 'equal_variance': True}, False)
         self.assertTrue((p_values.round(8) == expected_p_values).all())
         self.assertTrue((scores.round(8) == expected_scores).all())
     #
@@ -78,7 +78,7 @@ class TestComStats(unittest.TestCase):
                            [ 3.38132124,  0.        ,  3.38132124,  0.78881064],
                            [ 0.        , -3.38132124,  0.        , -2.88675135],
                            [ 2.88675135, -0.78881064,  2.88675135,  0.        ]]
-        p_values, scores = stats.t_test(self.input_set, None, {'paired': False, 'equal_variance': True}, True)
+        p_values, scores = comstats.t_test(self.input_set, None, {'paired': False, 'equal_variance': True}, True)
         self.assertTrue((p_values.round(8) == expected_p_values).all())
         self.assertTrue((scores.round(8) == expected_scores).all())
 
@@ -91,7 +91,7 @@ class TestComStats(unittest.TestCase):
                            [ 3.53992642,  0.        ,  3.83253879,  1.76327075],
                            [-0.66687841, -3.83253879,  0.        , -2.23466985],
                            [ 1.85781692, -1.76327075,  2.23466985,  0.        ]]
-        p_values, scores = stats.t_test(self.input_set, self.weights, {'paired': False, 'equal_variance': False})
+        p_values, scores = comstats.t_test(self.input_set, self.weights, {'paired': False, 'equal_variance': False})
         self.assertTrue((p_values.round(8) == expected_p_values).all())
         self.assertTrue((scores.round(8) == expected_scores).all())
 
@@ -104,7 +104,7 @@ class TestComStats(unittest.TestCase):
                            [ 3.53992642,  0.        ,  3.83253879,  1.76327075],
                            [-0.66687841, -3.83253879,  0.        , -2.23466985],
                            [ 1.85781692, -1.76327075,  2.23466985,  0.        ]]
-        p_values, scores = stats.t_test(self.input_set, self.weights, {'paired': False, 'equal_variance': False}, True)
+        p_values, scores = comstats.t_test(self.input_set, self.weights, {'paired': False, 'equal_variance': False}, True)
         self.assertTrue((p_values.round(8) == expected_p_values).all())
         self.assertTrue((scores.round(8) == expected_scores).all())
 
@@ -117,7 +117,7 @@ class TestComStats(unittest.TestCase):
                            [ 3.60906033, 0,           3.00438276, 0.82305489],
                            [ 0.        , -3.00438276, 0,          -2.73861279],
                            [ 3.87298335, -0.82305489, 2.73861279, 0          ]]
-        p_values, scores = stats.t_test(self.input_set, None, {'paired': True, 'equal_variance': False})
+        p_values, scores = comstats.t_test(self.input_set, None, {'paired': True, 'equal_variance': False})
         self.assertTrue((p_values.round(8) == expected_p_values).all())
         self.assertTrue((scores.round(8) == expected_scores).all())
 
@@ -130,7 +130,7 @@ class TestComStats(unittest.TestCase):
                            [ 3.60906033,  0.        ,  3.00438276,  0.82305489],
                            [ 0.        , -3.00438276,  0.        , -2.73861279],
                            [ 3.87298335, -0.82305489,  2.73861279,  0.        ]]
-        p_values, scores = stats.t_test(self.input_set, None, {'paired': True, 'equal_variance': False}, True)
+        p_values, scores = comstats.t_test(self.input_set, None, {'paired': True, 'equal_variance': False}, True)
         self.assertTrue((p_values.round(8) == expected_p_values).all())
         self.assertTrue((scores.round(8) == expected_scores).all())
 
@@ -139,7 +139,7 @@ class TestComStats(unittest.TestCase):
                              [ 0.57861761,  1.        ]]
         expected_scores = [[ 0.        , -0.56195533],
                            [ 0.56195533,  0.        ]]
-        p_values, scores = stats.percentage_t_test(self.percentage_input_set)
+        p_values, scores = comstats.percentage_t_test(self.percentage_input_set)
         self.assertTrue((p_values.round(8) == expected_p_values).all())
         self.assertTrue((scores.round(8) == expected_scores).all())
 
@@ -148,7 +148,7 @@ class TestComStats(unittest.TestCase):
                              [ 0.2893088,  0.5      ]]
         expected_scores = [[ 0.        , -0.56195533],
                            [ 0.56195533,  0.        ]]
-        p_values, scores = stats.percentage_t_test(self.percentage_input_set, None, {'distribution': 't'}, True)
+        p_values, scores = comstats.percentage_t_test(self.percentage_input_set, None, {'distribution': 't'}, True)
         self.assertTrue((p_values.round(8) == expected_p_values).all())
         self.assertTrue((scores.round(8) == expected_scores).all())
     #
@@ -157,7 +157,7 @@ class TestComStats(unittest.TestCase):
                              [ 0.4401976,  0.5      ]]
         expected_scores = [[ 0.        , -0.15184861],
                            [ 0.15184861,  0.        ]]
-        p_values, scores = stats.percentage_t_test(self.percentage_input_set, self.percentage_weights, {'distribution': 't'}, True)
+        p_values, scores = comstats.percentage_t_test(self.percentage_input_set, self.percentage_weights, {'distribution': 't'}, True)
         self.assertTrue((p_values.round(8) == expected_p_values).all())
         self.assertTrue((scores.round(8) == expected_scores).all())
     #
@@ -166,7 +166,7 @@ class TestComStats(unittest.TestCase):
                              [ 0.87930634,  1.        ]]
         expected_scores = [[ 0.        , -0.15184861],
                            [ 0.15184861,  0.        ]]
-        p_values, scores = stats.percentage_t_test(self.percentage_input_set, self.percentage_weights, {'distribution': 'z'})
+        p_values, scores = comstats.percentage_t_test(self.percentage_input_set, self.percentage_weights, {'distribution': 'z'})
         self.assertTrue((p_values.round(8) == expected_p_values).all())
         self.assertTrue((scores.round(8) == expected_scores).all())
 
@@ -175,6 +175,6 @@ class TestComStats(unittest.TestCase):
                              [ 0.43965317,  0.5       ]]
         expected_scores = [[ 0.        , -0.15184861],
                            [ 0.15184861,  0.        ]]
-        p_values, scores = stats.percentage_t_test(self.percentage_input_set, self.percentage_weights, {'distribution': 'z'}, True)
+        p_values, scores = comstats.percentage_t_test(self.percentage_input_set, self.percentage_weights, {'distribution': 'z'}, True)
         self.assertTrue((p_values.round(8) == expected_p_values).all())
         self.assertTrue((scores.round(8) == expected_scores).all())
