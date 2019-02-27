@@ -8,8 +8,8 @@ setup(
     version="0.1.0",
 
     # Application author details:
-    author="Zappistore",
-    author_email="mark@zappistore.com",
+    author="Data Science Team @ Zappistore",
+    author_email="datascience@zappistore.com",
 
     # Packages
     packages=[],
