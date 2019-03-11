@@ -1,4 +1,4 @@
-from distutils.core import setup
+from setuptools import setup
 
 setup(
     # Application name:
@@ -12,17 +12,15 @@ setup(
     author_email="datascience@zappistore.com",
 
     # Packages
-    packages=[],
+    packages=['ComStats'],
 
     # Include additional files into the package
     include_package_data=True,
 
     # Details
-    url="http://pypi.python.org/pypi/ComStats_v010/",
-
+    url="https://pypi.org/project/ComStats/",
     # license="LICENSE.txt",
     description="Do combinatorial statistics on numpy ndarrays",
-
     # long_description=open("README.txt").read(),
 
     # Dependent packages (distributions)

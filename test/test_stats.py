@@ -1,5 +1,5 @@
 import unittest
-import comstats
+from ComStats import comstats
 import numpy as np
 
 class TestComStats(unittest.TestCase):
