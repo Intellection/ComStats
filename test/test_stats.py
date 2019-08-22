@@ -29,6 +29,21 @@ class TestComStats(unittest.TestCase):
             [1, 0.1, 0.2, 0.3, 2, 0.1, 0.1, 2, 0.1, 0.1, 0.2, 0.1, 0.3, 0.4, 1],
             [1, 0.1, 0.2, 0.3, 2, 0.1, 0.1, 2, 0.1, 0.1, 0.2, 0.1, 0.3, 0.4, 1]
         ])
+        self.sample_sizes_set = np.array([
+            [20, 50, 10, 12, 25]
+        ])
+        self.count_set = np.array([
+            [11, 20, 8, 3, 18]
+        ])
+        self.population_proportion_set = np.array([
+            [0.5, 0.3, 0.7, 0.4, 0.6]
+        ])
+        self.binary_sample_input_set = np.array([
+            [1, 0, 1, 1, 1, 0, 0, 1, 0, 1],
+            [1, 1, 1, 1, 0, 1, 1, 1, 0, 1]
+        ])
+        self.population_proportion_scalar = 0.7
+
 
     def test_unweighted_t_test(self):
         expected_p_values = [[ 1.        ,  0.00353093,  1.        ,  0.00961514],
@@ -176,5 +191,19 @@ class TestComStats(unittest.TestCase):
         expected_scores = [[ 0.        , -0.15184861],
                            [ 0.15184861,  0.        ]]
         p_values, scores = comstats.percentage_t_test(self.percentage_input_set, self.percentage_weights, {'distribution': 'z'}, True)
+        self.assertTrue((p_values.round(8) == expected_p_values).all())
+        self.assertTrue((scores.round(8) == expected_scores).all())
+
+    def test_one_sample_z_test_simple(self):
+        expected_p_values = [0.65472085, 0.12282265, 0.49015296, 0.28884437, 0.22067136]
+        expected_scores = [0.4472136, 1.5430335, 0.69006556, -1.06066017, 1.22474487]
+        p_values, scores = comstats.one_sample_z_test_simple(self.count_set, self.sample_sizes_set, self.population_proportion_set)
+        self.assertTrue((p_values.round(8) == expected_p_values).all())
+        self.assertTrue((scores.round(8) == expected_scores).all())
+
+    def test_one_sample_z_test(self):
+        expected_p_values = [0.49015296, 0.49015296]
+        expected_scores = [-0.69006556, 0.69006556]
+        p_values, scores = comstats.one_sample_z_test(self.binary_sample_input_set, self.population_proportion_scalar)
         self.assertTrue((p_values.round(8) == expected_p_values).all())
         self.assertTrue((scores.round(8) == expected_scores).all())
