@@ -76,7 +76,7 @@ def one_sample_z_test(v, population_proportion, tails=2):
     return one_sample_z_test_simple(v.sum(axis=1), v.shape[1], population_proportion, tails)
 
 def one_sample_z_test_simple(count, sample_size, population_proportion, tails=2):
-    ratios = count/sample_size
+    ratios = count / sample_size
     standard_error = (population_proportion * (1.0 - population_proportion) / sample_size) ** 0.5
     score = (ratios - population_proportion) / standard_error
     p_values = (1.0 - stats.norm.cdf(np.abs(score))) * tails
