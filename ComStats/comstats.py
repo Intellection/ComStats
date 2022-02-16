@@ -16,7 +16,7 @@ def weighted_t_test_(v, weights):
     weighted_count = np.nansum(weights, axis=1)
     mean = np.nansum(v * weights, axis=1) / np.nansum(weights, axis=1)
     t_nom = mean[:, np.newaxis] - mean
-    var = np.sqrt(np.nansum(((v.T - mean)**2) * weights.T, axis=0) / np.nansum(weights, axis=1))**2
+    var = np.sqrt(np.nansum(((v.T - mean)**2) * weights.T, axis=0) / np.nansum(weights, axis=1))
     t_denom = weighted_count * var + weighted_count[:, np.newaxis] * var[:, np.newaxis]
     inv_base = 1/weighted_count + 1/weighted_count[:, np.newaxis]
     dof = base + base[:, np.newaxis] - 2
