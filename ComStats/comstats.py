@@ -12,14 +12,13 @@ def t_test(v, weights=None, opts={'paired': False, 'equal_variance': False}, one
     return p_values, score
 
 def weighted_t_test_(v, weights):
-    base = np.nansum(~np.isnan(v)*1, axis=1)
     weighted_count = np.nansum(weights, axis=1)
     mean = np.nansum(v * weights, axis=1) / np.nansum(weights, axis=1)
     t_nom = mean[:, np.newaxis] - mean
     var = np.sqrt(np.nansum(((v.T - mean)**2) * weights.T, axis=0) / np.nansum(weights, axis=1))**2
     t_denom = weighted_count * var + weighted_count[:, np.newaxis] * var[:, np.newaxis]
     inv_base = 1/weighted_count + 1/weighted_count[:, np.newaxis]
-    dof = base + base[:, np.newaxis] - 2
+    dof = weighted_count + weighted_count[:, np.newaxis] - 2
     score = t_nom / np.sqrt((t_denom * inv_base) / dof)
     return score, dof
 
